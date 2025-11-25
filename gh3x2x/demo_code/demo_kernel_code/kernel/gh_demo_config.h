@@ -16,7 +16,7 @@
 
 /* bsp config */
 /**< interface config __GH3X2X_INTERFACE_I2C__ /__GH3X2X_INTERFACE_SPI__ */
-#define __GH3X2X_INTERFACE__                            (__GH3X2X_INTERFACE_SPI__)
+#define __GH3X2X_INTERFACE__                            (__GH3X2X_INTERFACE_I2C__)
 #if(__GH3X2X_INTERFACE__ == __GH3X2X_INTERFACE_SPI__)
 #define __GH3X2X_SPI_TYPE__                             (__GH3X2X_SPI_TYPE_SOFTWARE_CS__)
 #endif
@@ -72,7 +72,7 @@
 #define __ADT_ONLY_PARTICULAR_WM_CONFIG__               (0)  //0: Do not set particular watermark at openning function is ADT only  N (N>3&&N<800): set particular watermark, and this value is N at openning function is ADT only
 
 /* ecg function type */
-#define __FUNC_TYPE_ECG_ENABLE__                        (1)    /**< ecg algorithm tye */
+#define __FUNC_TYPE_ECG_ENABLE__                        (0)    /**< ecg algorithm tye */
 #if __FUNC_TYPE_ECG_ENABLE__
 #define __FUNC_TYPE_PWTT_ENABLE__                       (1)    /**< pwtt algorithm tye */
 #define __FUNC_TYPE_BP_ENABLE__                         (1)    /**< bp algorithm tye */
@@ -122,7 +122,7 @@
 #if (__SUPPORT_PROTOCOL_ANALYZE__)
 #define __UPLOAD_ALGO_RESULT__                          (1)         /**< upload algorithm result or not */
 #define __PROTOCOL_SERIAL_TYPE__                        (__PROTOCOL_SERIAL_USE_BLE__)  /**< protocol communicate serial port type */
-#define __SUPPORT_ZIP_PROTOCOL__                        (1)
+#define __SUPPORT_ZIP_PROTOCOL__                        (0)
 #define __FIFO_PACKAGE_SEND_ENABLE__                    (0)         /** 1: fifo package send mode enable  0: cannot open fifo package send mode */
 #define __GH3X2X_PROTOCOL_SEND_TIMER_PERIOD__           (10)        /** (unit : ms ) protocal data send timer period */
 #define __GH3X2X_PROTOCOL_DATA_FIFO_LEN__               (64)        /** protocal data send fifo length **/
@@ -134,21 +134,21 @@
 #define __SUPPORT_SAMPLE_DEBUG_MODE__                   (0)         /**< use sample debug mode */
 #define __SUPPORT_ELECTRODE_WEAR_STATUS_DUMP__          (1)         /** use electrode wear status dump */
 #define __GH3X2X_INFO_LOG_TYPE__                        (__GH3X2X_INFO_LOG_METHOD_0__) /**< example log config */
-#define __GH3X2X_INFO_LOG_LEVEL__                       (__GH3X2X_INFO_LOG_LV_0__) /**< example log config */
+#define __GH3X2X_INFO_LOG_LEVEL__                       (__GH3X2X_INFO_LOG_LV_1__|__GH3X2X_INFO_LOG_LV_2__|__GH3X2X_INFO_LOG_LV_3__|__GH3X2X_INFO_LOG_LV_4__) /**< example log config */
 #define   GH3X2X_INFO_LOG_MAX_LEN                       (180)
 #define   GH3X2X_IODATA_LOG_MAX_LEN                     (512)
 #define __SUPPORT_ENGINEERING_MODE__                    (1)         /**< enginerring mode*/
 #define __GH3X2X_MEM_POOL_CHECK_EN__                    (0)         /** 1: drv lib checks algo mem pool befor every time of algo calculating   0: do not check  **/
 
 /* operate config */
-#define __SUPPORT_FUNCTION_SAMPLE_RATE_MODIFY__         (0)         /** 0: only use default sample rate in array cfg  1: modifying function sample rate is supported via API: Gh3x2xDemoFunctionSampleRateSet */
+#define __SUPPORT_FUNCTION_SAMPLE_RATE_MODIFY__         (1)         /** 0: only use default sample rate in array cfg  1: modifying function sample rate is supported via API: Gh3x2xDemoFunctionSampleRateSet */
 
 /*config list*/
 #define __GH3X2X_CFG_LIST_MAX_NUM__                     (8)         /**< max num of config list(1 ~ 8) */
 
 /* other config */
 #define __SUPPORT_HOOK_FUNC_CONFIG__                    (1)         /**< support hook func config */
-#define __SUPPORT_ALGO_INPUT_OUTPUT_DATA_HOOK_CONFIG__  (1)         /**< enable it ,we can get algo input and output data **/
+#define __SUPPORT_ALGO_INPUT_OUTPUT_DATA_HOOK_CONFIG__  (0)         /**< enable it ,we can get algo input and output data **/
 #define __SUPPORT_ALGO_INPUT_OUTPUT_DATA_LOG__          (0)         /**< enable it ,can print algo input and output data **/
 
 /* gh3x2x data buffer size config,this is related to gh3x2x fifo water mark config */
@@ -190,58 +190,27 @@
 /***********************************  DO NOT MODIFY FOLLOWING CODE *******************************/
 /* log def*/
 #if (__GH3X2X_INFO_LOG_LEVEL__ > __GH3X2X_INFO_LOG_LV_0__)
+extern void hrm_print_fmt(const char * fmt, ...);
 #if (__GH3X2X_INFO_LOG_LEVEL__ & __GH3X2X_INFO_LOG_LV_1__)
-#define   GH3X2X_INFO_LOG(...)              do{\
-                                            if(g_pSnprintfUserIn)\
-                                            {\
-                                                char gh3x2x_GH3X2X_INFO_LOG[GH3X2X_INFO_LOG_MAX_LEN] = {0};\
-                                                g_pSnprintfUserIn(gh3x2x_GH3X2X_INFO_LOG, GH3X2X_INFO_LOG_MAX_LEN, "[LOG_I] " __VA_ARGS__);\
-                                                GH3X2X_PlatformLog((GCHAR *)gh3x2x_GH3X2X_INFO_LOG);\
-                                            }\
-                                            if(g_pPrintfUserIn)g_pPrintfUserIn("[LOG_I] " __VA_ARGS__);\
-                                        } while(0)
+#define   GH3X2X_INFO_LOG(fmt, ...)         do{hrm_print_fmt(fmt, ##__VA_ARGS__);}while(0)
 #else
 #define   GH3X2X_INFO_LOG(...)
 #endif
 
 #if (__GH3X2X_INFO_LOG_LEVEL__ & __GH3X2X_INFO_LOG_LV_2__)
-#define   GH3X2X_DEBUG_LOG(...)              do{\
-                                            if(g_pSnprintfUserIn)\
-                                            {\
-                                                char gh3x2x_GH3X2X_INFO_LOG[GH3X2X_INFO_LOG_MAX_LEN] = {0};\
-                                                g_pSnprintfUserIn(gh3x2x_GH3X2X_INFO_LOG, GH3X2X_INFO_LOG_MAX_LEN, "[LOG_D] " __VA_ARGS__);\
-                                                GH3X2X_PlatformLog((GCHAR *)gh3x2x_GH3X2X_INFO_LOG);\
-                                            }\
-                                            if(g_pPrintfUserIn)g_pPrintfUserIn("[LOG_D] " __VA_ARGS__);\
-                                        } while(0)
+#define   GH3X2X_DEBUG_LOG(fmt, ...)        do{hrm_print_fmt(fmt, ##__VA_ARGS__);}while(0)
 #else
 #define   GH3X2X_DEBUG_LOG(...)	
 #endif
 
 #if (__GH3X2X_INFO_LOG_LEVEL__ & __GH3X2X_INFO_LOG_LV_3__)
-#define   GH3X2X_WARNING_LOG(...)              do{\
-                                            if(g_pSnprintfUserIn)\
-                                            {\
-                                                char gh3x2x_GH3X2X_INFO_LOG[GH3X2X_INFO_LOG_MAX_LEN] = {0};\
-                                                g_pSnprintfUserIn(gh3x2x_GH3X2X_INFO_LOG, GH3X2X_INFO_LOG_MAX_LEN, "[LOG_W] " __VA_ARGS__);\
-                                                GH3X2X_PlatformLog((GCHAR *)gh3x2x_GH3X2X_INFO_LOG);\
-                                            }\
-                                            if(g_pPrintfUserIn)g_pPrintfUserIn("[LOG_W] " __VA_ARGS__);\
-                                        } while(0)
+#define   GH3X2X_WARNING_LOG(fmt, ...)      do{hrm_print_fmt(fmt, ##__VA_ARGS__);}while(0)
 #else
 #define   GH3X2X_WARNING_LOG(...)	
 #endif
 
 #if (__GH3X2X_INFO_LOG_LEVEL__ & __GH3X2X_INFO_LOG_LV_4__)
-#define   GH3X2X_ERROR_LOG(...)              do{\
-                                            if(g_pSnprintfUserIn)\
-                                            {\
-                                                char gh3x2x_GH3X2X_INFO_LOG[GH3X2X_INFO_LOG_MAX_LEN] = {0};\
-                                                g_pSnprintfUserIn(gh3x2x_GH3X2X_INFO_LOG, GH3X2X_INFO_LOG_MAX_LEN,"[LOG_E] "  __VA_ARGS__);\
-                                                GH3X2X_PlatformLog((GCHAR *)gh3x2x_GH3X2X_INFO_LOG);\
-                                            }\
-                                            if(g_pPrintfUserIn)g_pPrintfUserIn("[LOG_E] "  __VA_ARGS__);\
-                                        } while(0)
+#define   GH3X2X_ERROR_LOG(fmt, ...)        do{hrm_print_fmt(fmt, ##__VA_ARGS__);}while(0)
 #else
 #define   GH3X2X_ERROR_LOG(...)	
 #endif

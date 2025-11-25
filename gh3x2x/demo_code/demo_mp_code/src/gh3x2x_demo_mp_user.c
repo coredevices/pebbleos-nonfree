@@ -43,8 +43,6 @@ void gh3x2x_mp_i2c_init(void)
     GH3X2X_MP_LOG_L2("gh3x2x_mp i2c start init!");
 	
 	GOODIX_MP_PLATFORM_I2C_INIT_ENTITY();
-	
-	
 }
 
 /**
@@ -65,11 +63,6 @@ void gh3x2x_mp_i2c_init(void)
 GU8 gh3x2x_mp_i2c_write(GU8 device_id, const GU8 write_buffer[], GU16 length);
 {
     GU8 ret = 1;
-
-    /* code implement by user */
-	
-	GOODIX_MP_PLATFORM_I2C_WRITE_ENTITY(device_id, write_buffer, length);
-
     return ret;
 }
 
@@ -96,11 +89,7 @@ GU8 gh3x2x_mp_i2c_read(GU8 device_id, const GU8 write_buffer[], GU16 write_lengt
 {
     GU8 ret = 1;
 
-    /* code implement by user */
-	
-	GOODIX_MP_PLATFORM_I2C_READ_ENTITY(device_id, write_buffer, write_length, read_buffer, read_length);
-    
-	return ret;
+    return ret;
 }
 
 /**
@@ -388,16 +377,17 @@ void gh3x2x_mp_prompt_message(GU8 uchMsg[], GU16 usMsglen)
 	
 	GH3X2X_MP_LOG_L2("gh3x2x_mp prompt message: %s! \r\n", uchMsg);
 	
-	if(0 == memcmp(uchMsg, PPG_PROMPT_UP_RUBBER_MSG, usMsglen))
+	if(0 == memcmp(uchMsg, PPG_PROMPT_UP_RUBBER_MSG, usMsglen)) {
 		GOODIX_MP_PLATFORM_PROMPT_UP_RUBBER_ENTITY(); /* code implement by user */
-	
+  }
 	//test is OK msg
-	if(0 == memcmp(uchMsg, GH3X2X_MP_TEST_OK_MSG, usMsglen))
+	if(0 == memcmp(uchMsg, GH3X2X_MP_TEST_OK_MSG, usMsglen)) {
 		GOODIX_MP_PLATFORM_PROMPT_TEST_OK_ENTITY(); /* code implement by user */
-	
+  }
 	//test is NG msg
-	if(0 == memcmp(uchMsg, GH3X2X_MP_TEST_NG_MSG, usMsglen))
+	if(0 == memcmp(uchMsg, GH3X2X_MP_TEST_NG_MSG, usMsglen)) {
 		GOODIX_MP_PLATFORM_PROMPT_TEST_NG_ENTITY(); /* code implement by user */
+  }
 }
 
 /**

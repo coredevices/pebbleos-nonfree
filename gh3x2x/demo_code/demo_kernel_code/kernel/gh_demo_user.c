@@ -16,6 +16,7 @@
 #include "gh_demo_config.h"
 #include "gh_demo_inner.h"
 #include "gh_demo.h"
+//#include "drivers/hrm/gh3x2x/hrm_gh3x2x.h"
 
 #if (__DRIVER_LIB_MODE__ == __DRV_LIB_WITH_ALGO__)
 #include "gh3x2x_demo_algo_call.h"
@@ -43,6 +44,9 @@ void hal_gh3x2x_i2c_init(void)
 {
     /* code implement by user */
     GOODIX_PLATFORM_I2C_INIT_ENTITY();
+
+    extern void gh3026_i2c_init(void);
+    gh3026_i2c_init();
 }
 
 /**
@@ -67,6 +71,10 @@ GU8 hal_gh3x2x_i2c_write(GU8 device_id, const GU8 write_buffer[], GU16 length)
 
     /* code implement by user */
     GOODIX_PLATFORM_I2C_WRITE_ENTITY(device_id, write_buffer,length);
+
+    extern void gh3026_i2c_write(uint8_t device_id, const uint8_t write_buffer[], uint16_t length);
+    gh3026_i2c_write(device_id, write_buffer, length);
+
     return ret;
 }
 
@@ -94,6 +102,10 @@ GU8 hal_gh3x2x_i2c_read(GU8 device_id, const GU8 write_buffer[], GU16 write_leng
 
     /* code implement by user */
     GOODIX_PLATFORM_I2C_READ_ENTITY(device_id, write_buffer, write_length, read_buffer, read_length);
+
+    extern void gh3026_i2c_read(uint8_t device_id, const uint8_t write_buffer[], uint16_t write_length, uint8_t read_buffer[], uint16_t read_length);
+    gh3026_i2c_read(device_id, write_buffer, write_length, read_buffer, read_length);
+
     return ret;
 }
 
@@ -225,6 +237,9 @@ void hal_gh3x2x_spi_cs_ctrl(GU8 cs_pin_level)
 void hal_gh3x2x_reset_pin_init(void)
 {
     GOODIX_PLATFORM_RESET_PIN_INIT_ENTITY();
+
+    extern void gh3026_reset_pin_init(void);
+    gh3026_reset_pin_init();
 }
 
 /**
@@ -242,6 +257,9 @@ void hal_gh3x2x_reset_pin_init(void)
 void hal_gh3x2x_reset_pin_ctrl(GU8 pin_level)
 {
    GOODIX_PLATFORM_SPI_RESET_PIN_ENTITY(pin_level);
+
+   extern void gh3026_reset_pin_ctrl(uint8_t pin_level);
+   gh3026_reset_pin_ctrl(pin_level);
 }
 #endif
 
@@ -260,6 +278,9 @@ void hal_gh3x2x_reset_pin_ctrl(GU8 pin_level)
 void hal_gh3x2x_int_init(void)
 {
     GOODIX_PLATFORM_INT_INIT_ENTITY();
+
+    extern void gh3026_int_pin_init(void);
+    gh3026_int_pin_init();
 }
 
 #if (__NORMAL_INT_PROCESS_MODE__ == __INTERRUPT_PROCESS_MODE__ || __MIX_INT_PROCESS_MODE__ == __INTERRUPT_PROCESS_MODE__)
@@ -279,6 +300,7 @@ void hal_gh3x2x_int_handler_call_back(void)
 {
     if (Gh3x2xGetInterruptMode() == __NORMAL_INT_PROCESS_MODE__)
     {
+        //GH3X2X_INFO_LOG("g_uchDemoWorkMode=%d", g_uchDemoWorkMode);
         if(GH3X2X_DEMO_WORK_MODE_MPT != g_uchDemoWorkMode)
         {
             g_uchGh3x2xIntCallBackIsCalled = 1;
@@ -387,6 +409,8 @@ void hal_gsensor_drv_get_fifo_data(STGsensorRawdata gsensor_buffer[], GU16 *gsen
 #endif
 
     GOODIX_PLATFORM_INT_GET_GS_DATA_ENTITY(gsensor_buffer, gsensor_buffer_index);
+    extern void gh3026_gsensor_data_get(STGsensorRawdata gsensor_buffer[], GU16 *gsensor_buffer_index);
+    gh3026_gsensor_data_get(gsensor_buffer, gsensor_buffer_index);
 
 /**************************** WARNNING: DO NOT REMOVE OR MODIFY THIS CODE   ---START***************************************************/
     if((*gsensor_buffer_index) > (__GSENSOR_DATA_BUFFER_SIZE__))
@@ -428,14 +452,14 @@ void hal_temp_drv_get_fifo_data(STTempRawdata temp_data_buffer[], GU16 *temp_buf
  * @return  None
  */
 
-    #if __GH3X2X_INFO_LOG_TYPE__ == __GH3X2X_INFO_LOG_METHOD_0__
+#if __GH3X2X_INFO_LOG_TYPE__ == __GH3X2X_INFO_LOG_METHOD_0__
 void GH3X2X_PlatformLog(GCHAR *log_string)
 {
     GOODIX_PLATFORM_LOG_ENTITY(log_string);
 }
-    #endif
+#endif
 
-    #if __GH3X2X_INFO_LOG_TYPE__ == __GH3X2X_INFO_LOG_METHOD_1__
+#if __GH3X2X_INFO_LOG_TYPE__ == __GH3X2X_INFO_LOG_METHOD_1__
 void GH3X2X_RegisterPrintf(int (**pPrintfUser)(const char *format, ...))
 {
     //(*pPrintfUser) = printf;   //use printf in <stdio.h>  or use equivalent function in your platform
@@ -456,10 +480,12 @@ void GH3X2X_RegisterPrintf(int (**pPrintfUser)(const char *format, ...))
  *
  * @return  None
  */
-
+extern void delay_us(uint32_t us);
 void Gh3x2x_BspDelayUs(GU16 usUsec)
 {
     GOODIX_PLATFORM_DELAY_US_ENTITY(usUsec);
+    
+    delay_us(usUsec);
 }
 
 /**
@@ -477,6 +503,7 @@ void Gh3x2x_BspDelayUs(GU16 usUsec)
 void Gh3x2x_BspDelayMs(GU16 usMsec)
 {
     GOODIX_PLATFORM_DELAY_MS_ENTITY(usMsec);
+    delay_us(usMsec * 1000);
 }
 
 #if (__GH_MULTI_SENSOR_EVENT_PRO_CONIG__)

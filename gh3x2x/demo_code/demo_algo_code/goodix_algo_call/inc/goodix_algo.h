@@ -10,12 +10,12 @@
 extern "C" {
 #endif  /* __cplusplus */
 
-typedef unsigned char       GU8;    /**< 8bit unsigned integer type */
-typedef signed char         GS8;    /**< 8bit signed integer type */
-typedef unsigned short      GU16;   /**< 16bit unsigned integer type */
-typedef signed short        GS16;   /**< 16bit signed integer type */
-typedef int                 GS32;   /**< 32bit signed integer type */
-typedef unsigned int        GU32;   /**< 32bit unsigned integer type */
+typedef uint8_t             GU8;    /**< 8bit unsigned integer type */
+typedef int8_t              GS8;    /**< 8bit signed integer type */
+typedef uint16_t            GU16;   /**< 16bit unsigned integer type */
+typedef int16_t             GS16;   /**< 16bit signed integer type */
+typedef int32_t             GS32;   /**< 32bit signed integer type */
+typedef uint32_t            GU32;   /**< 32bit unsigned integer type */
 typedef float               GF32;   /**< float type */
 typedef double              GD64;   /**< double type */
 typedef char                GCHAR;  /**< char type */
@@ -31,16 +31,18 @@ extern void GH3X2X_PlatformLog(GCHAR *chLogString);
 /// log support len
 #define GH3X2X_LOG_ALGO_SUP_LEN     (128)
 
-//#define   GH3X2X_DEBUG_ALGO_LOG(...)       do {\
-//                                                if(g_pSnprintfUserIn)\
-//                                                {\
-//                                                    GCHAR _7iwtO6qX0[GH3X2X_LOG_ALGO_SUP_LEN] = {0};\
-//                                                    g_pSnprintfUserIn(_7iwtO6qX0, GH3X2X_LOG_ALGO_SUP_LEN, \
-//                                                            "[gh3x2x_drv]: "__VA_ARGS__);\
-//                                                    GH3X2X_PlatformLog(_7iwtO6qX0);\
-//                                                 }\
-//                                                 if(g_pPrintfUserIn)g_pPrintfUserIn("[gh3x2x_drv]: "__VA_ARGS__);\
-//                                            } while (0)
+#if 0
+#define   GH3X2X_DEBUG_ALGO_LOG(...)       do {\
+                                                if(g_pSnprintfUserIn)\
+                                                {\
+                                                    GCHAR _7iwtO6qX0[GH3X2X_LOG_ALGO_SUP_LEN] = {0};\
+                                                    g_pSnprintfUserIn(_7iwtO6qX0, GH3X2X_LOG_ALGO_SUP_LEN, \
+                                                            "[gh3x2x_drv]: "__VA_ARGS__);\
+                                                    GH3X2X_PlatformLog(_7iwtO6qX0);\
+                                                 }\
+                                                 if(g_pPrintfUserIn)g_pPrintfUserIn("[gh3x2x_drv]: "__VA_ARGS__);\
+                                            } while (0)
+#endif
 
 /* ******************************************************************************************* */
 //public part
