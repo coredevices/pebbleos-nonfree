@@ -31,7 +31,7 @@ STZipLastDataTemp g_stZipTempData;
 #endif
 
 
-#define GH3X2X_PROTOCOL_VERSION_STRING "Health_Uprotocol_v0.4"
+#define GH3X2X_PROTOCOL_VERSION_STRING "Gh3x2x_Uprotocol_v0.4"
 extern GU8 g_uchFifoPackageID;
 extern GU8 g_uchFifoPackageMode;
 extern GU8 g_uchResetFromProtocolFlag;
@@ -1104,9 +1104,11 @@ static void GH3X2X_UprotocolEcgCascadeCmd(GU8 *puchRespondBuffer, GU16 *pusRespo
             break;
     }
 
+#if 0
     /* respond packet format */
-//    SET_VAL_VIA_PTR(pusRespondLen, GH3X2X_UprotocolPacketFormat(g_uchPacketCmd, puchRespondBuffer,\
-//                                g_pstGh3x2xProtocolData->puchPacketPayloadArr, UPROTOCOL_CONN_ECG_CLASSIFICATION_LEN));
+    SET_VAL_VIA_PTR(pusRespondLen, GH3X2X_UprotocolPacketFormat(g_uchPacketCmd, puchRespondBuffer,\
+                                g_pstGh3x2xProtocolData->puchPacketPayloadArr, UPROTOCOL_CONN_ECG_CLASSIFICATION_LEN));
+#endif
 }
 
 /**

@@ -9,7 +9,8 @@
 *
 */
 
-
+#include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include "gh_demo_config.h"
 #include "gh_demo_inner.h"

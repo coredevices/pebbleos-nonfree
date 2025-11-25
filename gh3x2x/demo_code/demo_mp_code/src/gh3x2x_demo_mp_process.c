@@ -1074,10 +1074,11 @@ GU8 gh3x2x_demo_mp_ecg_cmmr_calculate(GS32 nRawdataArr[], GU16 usLength, GF32 *f
 	
 	gh3x2x_demo_mp_ecg_cal_signal_amp_freq(nRawdataArr, usLength, &amp, &freq, 1, 5, uchFsType, 200, -1, fRefFreq, 1);
 	
-	if (amp)
+	if (amp) {
         *fCmmr = (20 * log10((GF32)1e6 / amp));
-    else
+  } else {
         *fCmmr = 0;
+  }
 	GH3X2X_MP_LOG_L2("Gh3x2x mp cal cmmr freq: %.5f \r\n", freq);
 	
 	return ret;

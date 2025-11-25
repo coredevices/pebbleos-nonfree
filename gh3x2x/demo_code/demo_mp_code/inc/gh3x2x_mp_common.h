@@ -91,17 +91,31 @@ extern GU8 GH3x2xMp_IntFlag; //use for mp
 #ifdef GOODIX_DEMO_MP_PLANFORM
 #include "gh3x2x_demo_mp_goodix_platform.h"
 #else
-#define GOODIX_MP_PLATFORM_I2C_INIT_ENTITY()
-#define GOODIX_MP_PLATFORM_I2C_WRITE_ENTITY(device_id, write_buffer, length)
-#define GOODIX_MP_PLATFORM_I2C_READ_ENTITY(device_id, write_buffer, write_length, read_buffer, read_length)
-#define GOODIX_MP_PLATFORM_I2C_SEND_CMD_ENTITY(device_id, uchCmd)
+extern void gh3026_i2c_init(void);
+extern void gh3026_i2c_write(uint8_t device_id, const uint8_t write_buffer[], uint16_t length);
+extern void gh3026_i2c_read(uint8_t device_id, const uint8_t write_buffer[], uint16_t write_length, uint8_t read_buffer[], uint16_t read_length);
+extern void gh3026_reset_pin_init(void);
+extern void gh3026_reset_pin_ctrl(uint8_t pin_level);
+extern void gh3026_int_pin_init(void);
+
+#define GOODIX_MP_PLATFORM_I2C_INIT_ENTITY()        \
+    gh3026_i2c_init()
+#define GOODIX_MP_PLATFORM_I2C_WRITE_ENTITY(device_id, write_buffer, length)    \
+    gh3026_i2c_write(device_id, write_buffer, length)
+#define GOODIX_MP_PLATFORM_I2C_READ_ENTITY(device_id, write_buffer, write_length, read_buffer, read_length) \
+    gh3026_i2c_read(device_id, write_buffer, write_length, read_buffer, read_length)
+#define GOODIX_MP_PLATFORM_I2C_SEND_CMD_ENTITY(device_id, uchCmd)   \
+    gh3026_i2c_write(device_id, &uchCmd, 1)
 #define GOODIX_MP_PLATFORM_SPI_INIT_ENTITY()
 #define GOODIX_MP_PLATFORM_SPI_WRITE_ENTITY(write_buffer, length)
 #define GOODIX_MP_PLATFORM_SPI_READ_ENTITY(uchWriteBuffer, usWriteLength, uchReadBuffer, usReadLength)
 #define GOODIX_MP_PLATFORM_SPI_SEND_CMD_ENTITY(uchCmd)
-#define GOODIX_MP_PLATFORM_RESET_PIN_INIT_ENTITY()
-#define GOODIX_MP_PLATFORM_RESET_PIN_CTRL_ENTITY(pin_level)
-#define GOODIX_MP_PLATFORM_INT_INIT_ENTITY()
+#define GOODIX_MP_PLATFORM_RESET_PIN_INIT_ENTITY()      \
+    gh3026_reset_pin_init()
+#define GOODIX_MP_PLATFORM_RESET_PIN_CTRL_ENTITY(pin_level) \
+    gh3026_reset_pin_ctrl(pin_level)
+#define GOODIX_MP_PLATFORM_INT_INIT_ENTITY()    \
+    gh3026_int_pin_init()
 #define GOODIX_MP_PLATFORM_INT_HANDLER_CALL_BACK_ENTITY()
 #define GOODIX_MP_PLATFORM_LED_POWER_PIN_INIT_ENTITY()
 #define GOODIX_MP_PLATFORM_LED_POWER_ON_ENTITY()

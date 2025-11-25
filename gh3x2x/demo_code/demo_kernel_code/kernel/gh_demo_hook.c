@@ -168,7 +168,7 @@ void gh3x2x_algorithm_get_io_data_hook_func(const STGh3x2xFrameInfo * const pstF
 
 #if (__SUPPORT_ALGO_INPUT_OUTPUT_DATA_HOOK_CONFIG__)
     /****************** FOLLOWING CODE IS EXAMPLE **********************************/
-    #if 0
+    #if 1
     //function id and channel num
     GH3X2X_INFO_LOG("[IO_DATA]Function ID: 0x%x, channel num = %d, frame cnt = %d\r\n",(int)(pstFrameInfo->unFunctionID),(int)(pstFrameInfo->pstFunctionInfo->uchChnlNum),(int)(pstFrameInfo->punFrameCnt[0]));
     //gsensor data

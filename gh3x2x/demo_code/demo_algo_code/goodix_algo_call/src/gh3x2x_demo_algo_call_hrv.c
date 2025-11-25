@@ -61,7 +61,7 @@ GS8 GH3x2xHrvAlgoInit(const STGh3x2xFrameInfo *const pstFrameInfo)
     GS8 chRet = GH3X2X_RET_GENERIC_ERROR;
 
     goodix_hrv_ret ret = goodix_hrv_init_func(pstFrameInfo->pstFunctionInfo->usSampleRate);
-    if (GX_ALGO_HBA_SUCCESS == ret)
+    if (GX_HRV_ALGO_OK == ret)
     {
         pstFrameInfo->pstAlgoResult->usResultBit = 0x7F;
         chRet = GH3X2X_RET_OK;
@@ -82,7 +82,7 @@ GS8 GH3x2xHrvAlgoDeinit(const STGh3x2xFrameInfo *const pstFrameInfo)
 
     GS8 chRet = GH3X2X_RET_GENERIC_ERROR;
 
-    if (GX_ALGO_HBA_SUCCESS == goodix_hrv_deinit_func())
+    if (GX_HRV_ALGO_OK == goodix_hrv_deinit_func())
     {
         chRet = GH3X2X_RET_OK;
     }

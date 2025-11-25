@@ -203,11 +203,11 @@ GS8 GH3x2xSoftAdtAlgoExe(const STGh3x2xFrameInfo * const pstFrameInfo)
                                              + ((pstFrameInfo->punFrameAgcInfo[nRawdatacnt] >> 16) & 0xFF);
         stRawdata.ch_agc_gain[nRawdatacnt * GH_ALGO_PPG_CHL_NUM]  = GH3X2X_GET_LOW_4BITS(pstFrameInfo->punFrameAgcInfo[nRawdatacnt]);
 
-//        stRawdata.enable_flg[nRawdatacnt / GH_ALGO_BYTE_BITS] = enable_flg[nRawdatacnt / GH_ALGO_BYTE_BITS] \
+//        stRawdata.enable_flg[nRawdatacnt / GH_ALGO_BYTE_BITS] = enable_flg[nRawdatacnt / GH_ALGO_BYTE_BITS] 
 //                                                                | (1 << (GH_ALGO_EN_FLAG_OFFSET - (nRawdatacnt % GH_ALGO_BYTE_BITS)));
 
-//        GH3X2X_DEBUG_ALGO_LOG("[%s]ppg_rawdata = %d, ch_agc_drv = %d, ch_agc_gain = %d\r\n", __FUNCTION__, \
-//            (int)stRawdata.ppg_rawdata[nRawdatacnt * GH_ALGO_PPG_CHL_NUM], (int)stRawdata.ch_agc_drv[nRawdatacnt * GH_ALGO_PPG_CHL_NUM], \
+//        GH3X2X_DEBUG_ALGO_LOG("[%s]ppg_rawdata = %d, ch_agc_drv = %d, ch_agc_gain = %d\r\n", __FUNCTION__, 
+//            (int)stRawdata.ppg_rawdata[nRawdatacnt * GH_ALGO_PPG_CHL_NUM], (int)stRawdata.ch_agc_drv[nRawdatacnt * GH_ALGO_PPG_CHL_NUM], 
 //            (int)stRawdata.ch_agc_gain[nRawdatacnt * GH_ALGO_PPG_CHL_NUM]);
     }
 

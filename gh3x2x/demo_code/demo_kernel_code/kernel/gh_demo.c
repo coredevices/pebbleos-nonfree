@@ -1721,7 +1721,7 @@ void Gh3x2xDemoInterruptProcess(void)
 #if (__FUNC_TYPE_ECG_ENABLE__)
     STSoftLeadResult stLeadResult = {0, 0};
 #endif
-
+    GH3X2X_INFO_LOG("---111---g_uchDemoWorkMode=%d", g_uchDemoWorkMode);
     if(GH3X2X_DEMO_WORK_MODE_MPT == g_uchDemoWorkMode)
     {
         return;
@@ -1743,6 +1743,7 @@ void Gh3x2xDemoInterruptProcess(void)
 #if (__NORMAL_INT_PROCESS_MODE__ == __INTERRUPT_PROCESS_MODE__ || __MIX_INT_PROCESS_MODE__ == __INTERRUPT_PROCESS_MODE__)
     if (g_uchGh3x2xIntMode == __NORMAL_INT_PROCESS_MODE__)
     {
+        GH3X2X_INFO_LOG("InterruptProcess: 22222222222222");
         if((0 == GH3X2X_GetSoftEvent())&&(0 == g_uchGh3x2xIntCallBackIsCalled))
         {
     #if (0 == __PLATFORM_WITHOUT_OS__)
@@ -1791,7 +1792,7 @@ void Gh3x2xDemoInterruptProcess(void)
         }
 #endif
         usGotEvent &= __GH3X2X_EVENT_PROCESS_MASK__;
-        //GH3X2X_INFO_LOG("usGotEvent = 0x%x\r\n", usGotEvent);
+        GH3X2X_INFO_LOG("usGotEvent = 0x%x\r\n", usGotEvent);
 
 #if (__SUPPORT_HARD_ADT_CONFIG__)
         /* Step 2: if hard adt enabled, do wear event process */
@@ -2021,6 +2022,7 @@ void Gh3x2xDemoInterruptProcess(void)
 #endif
 
         /* Step 6: chip reset event process*/
+        GH3X2X_INFO_LOG("usGotEvent=%04x", usGotEvent);
         if(0 != (usGotEvent & GH3X2X_IRQ_MSK_CHIP_RESET_BIT))
         {
             if(0 == GH3x2x_GetChipResetRecoveringFlag())  //do nothing in recover period
@@ -2141,7 +2143,7 @@ void Gh3x2xDemoInterruptProcess(void)
                 if(0 == GhGsMoveDetecterIsEnable())
 #endif
                 {
-                    hal_gsensor_drv_get_fifo_data(gsensor_soft_fifo_buffer + __GS_EXTRA_BUF_LEN__, &gsensor_soft_fifo_buffer_index);        
+                    hal_gsensor_drv_get_fifo_data(gsensor_soft_fifo_buffer + __GS_EXTRA_BUF_LEN__, &gsensor_soft_fifo_buffer_index);
                     Gh3x2x_NormalizeGsensorSensitivity(gsensor_soft_fifo_buffer + __GS_EXTRA_BUF_LEN__ ,gsensor_soft_fifo_buffer_index);
                 }
             }
@@ -2240,7 +2242,6 @@ void Gh3x2xDemoInterruptProcess(void)
             uchIntRepeatNum++;
         }
     }while(GH3X2X_INT_PROCESS_REPEAT == uchRet);
-
     g_uchGh3x2xInterruptProNotFinishFlag = 0;
 }
 
@@ -2635,7 +2636,7 @@ void Gh3x2xDemoSamplingControl(GU32 unFuncMode, EMUprotocolParseCmdType emSwitch
 
     if ((GH3X2X_GetConfigFuncMode() & unFuncMode) != unFuncMode)
     {
-        GH3X2X_INFO_LOG("[%s]:config has no target function!!!config function = 0x%08x,unFuncMode = 0x%08x\r\n", __FUNCTION__, GH3X2X_GetConfigFuncMode(),unFuncMode);
+        GH3X2X_INFO_LOG("config function = 0x%08x,unFuncMode = 0x%08x\r\n", GH3X2X_GetConfigFuncMode(),unFuncMode);
         unFuncMode = (GH3X2X_GetConfigFuncMode() & unFuncMode);
     }
     if(unFuncMode == 0)

@@ -11,6 +11,8 @@
 #ifndef _GH3X2X_MP_CONFIG_H_
 #define _GH3X2X_MP_CONFIG_H_
 
+#include <stdint.h>
+
 /* communicate interface macro */
 #define __GH3X2X_MP_INTERFACE_I2C__            			  (1)     							/**< interface use i2c >**/
 #define __GH3X2X_MP_INTERFACE_SPI__            			  (2)     							/**< interface use spi >**/
@@ -24,12 +26,12 @@
 #define __GH3X2X_AFE_DRV_INTERFACE__					  (2)								/**< mp test use afe drv interface >**/
 
 /* type redefine */
-typedef unsigned char       GU8;    /**< 8bit unsigned integer type */
-typedef signed char         GS8;    /**< 8bit signed integer type */
-typedef unsigned short      GU16;   /**< 16bit unsigned integer type */
-typedef signed short        GS16;   /**< 16bit signed integer type */
-typedef int                 GS32;   /**< 32bit signed integer type */
-typedef unsigned int        GU32;   /**< 32bit unsigned integer type */
+typedef uint8_t             GU8;    /**< 8bit unsigned integer type */
+typedef int8_t              GS8;    /**< 8bit signed integer type */
+typedef uint16_t            GU16;   /**< 16bit unsigned integer type */
+typedef int16_t             GS16;   /**< 16bit signed integer type */
+typedef int32_t             GS32;   /**< 32bit signed integer type */
+typedef uint32_t            GU32;   /**< 32bit unsigned integer type */
 typedef float               GF32;   /**< float type */
 typedef double              GD64;   /**< double type */
 typedef char                GCHAR;  /**< char type */
@@ -46,7 +48,7 @@ typedef long long           GS64;   /**< 64bit signed integer type */
 #define __GH3X2X_MP_USE_DRV_INTERFACE_TYPE__              (0)    /**< drv interface config __GH3X2X_DRV_LIB_INTERFACE__ /__GH3X2X_AFE_DRV_INTERFACE__ >**/           
 #endif
 
-#define __GH3X2X_MP_INTERFACE__                			  (__GH3X2X_MP_INTERFACE_SPI__)     /**< interface config __GH3X2X_MP_INTERFACE_I2C__ /__GH3X2X_MP_INTERFACE_SPI__ >**/
+#define __GH3X2X_MP_INTERFACE__                			  (__GH3X2X_MP_INTERFACE_I2C__)     /**< interface config __GH3X2X_MP_INTERFACE_I2C__ /__GH3X2X_MP_INTERFACE_SPI__ >**/
 
 #define __GH3X2X_MP_LOG_LVL__                          	  (2)                          		/**< gh3x2x mp log level, <==0>off, <==1>error log, <==2>info log >**/
 

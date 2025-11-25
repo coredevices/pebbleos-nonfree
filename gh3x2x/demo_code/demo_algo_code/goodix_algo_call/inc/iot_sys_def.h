@@ -11,14 +11,14 @@
 typedef unsigned char            GBOOL;
 typedef          char            GCHAR;
 typedef unsigned char            GUCHAR;
-typedef signed   char            GS8;
-typedef unsigned char            GU8;
+typedef int8_t                    GS8;
+typedef uint8_t                   GU8;
 
-typedef signed   short           GS16;
-typedef unsigned short           GU16;
+typedef int16_t                   GS16;
+typedef uint16_t                  GU16;
 
-typedef signed   int             GS32;
-typedef unsigned int             GU32;
+typedef int32_t                   GS32;
+typedef uint32_t                  GU32;
 
 typedef signed   long long       GS64;
 typedef unsigned long long       GU64;

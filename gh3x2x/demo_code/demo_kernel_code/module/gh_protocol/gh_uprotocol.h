@@ -377,7 +377,7 @@ void GH3X2X_FillAlgoData(GU16* pusPayloadIndex, GS32 nAlgoCalcResultArr[], GU8 u
  */
 void GH3X2X_FillElectrodeWearRevertData(GU16* pusPayloadIndex);
 
-void GH3X2X_GetVersion(GU8 uchGetVersionType, GCHAR pszVersionString[100]);
+void GH3X2X_GetVersion(GU8 uchGetVersionType, GCHAR pszVersionString[150]);
 
 
 #endif /* _GH3X2X_DRV_UPROTOCOL_H_ */
