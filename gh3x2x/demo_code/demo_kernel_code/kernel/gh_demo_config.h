@@ -190,27 +190,27 @@
 /***********************************  DO NOT MODIFY FOLLOWING CODE *******************************/
 /* log def*/
 #if (__GH3X2X_INFO_LOG_LEVEL__ > __GH3X2X_INFO_LOG_LV_0__)
-extern void hrm_print_fmt(const char * fmt, ...);
+extern void gh3x2x_print_fmt(const char * fmt, ...);
 #if (__GH3X2X_INFO_LOG_LEVEL__ & __GH3X2X_INFO_LOG_LV_1__)
-#define   GH3X2X_INFO_LOG(fmt, ...)         do{hrm_print_fmt(fmt, ##__VA_ARGS__);}while(0)
+#define   GH3X2X_INFO_LOG(fmt, ...)         do{gh3x2x_print_fmt(fmt, ##__VA_ARGS__);}while(0)
 #else
 #define   GH3X2X_INFO_LOG(...)
 #endif
 
 #if (__GH3X2X_INFO_LOG_LEVEL__ & __GH3X2X_INFO_LOG_LV_2__)
-#define   GH3X2X_DEBUG_LOG(fmt, ...)        do{hrm_print_fmt(fmt, ##__VA_ARGS__);}while(0)
+#define   GH3X2X_DEBUG_LOG(fmt, ...)        do{gh3x2x_print_fmt(fmt, ##__VA_ARGS__);}while(0)
 #else
 #define   GH3X2X_DEBUG_LOG(...)	
 #endif
 
 #if (__GH3X2X_INFO_LOG_LEVEL__ & __GH3X2X_INFO_LOG_LV_3__)
-#define   GH3X2X_WARNING_LOG(fmt, ...)      do{hrm_print_fmt(fmt, ##__VA_ARGS__);}while(0)
+#define   GH3X2X_WARNING_LOG(fmt, ...)      do{gh3x2x_print_fmt(fmt, ##__VA_ARGS__);}while(0)
 #else
 #define   GH3X2X_WARNING_LOG(...)	
 #endif
 
 #if (__GH3X2X_INFO_LOG_LEVEL__ & __GH3X2X_INFO_LOG_LV_4__)
-#define   GH3X2X_ERROR_LOG(fmt, ...)        do{hrm_print_fmt(fmt, ##__VA_ARGS__);}while(0)
+#define   GH3X2X_ERROR_LOG(fmt, ...)        do{gh3x2x_print_fmt(fmt, ##__VA_ARGS__);}while(0)
 #else
 #define   GH3X2X_ERROR_LOG(...)	
 #endif
