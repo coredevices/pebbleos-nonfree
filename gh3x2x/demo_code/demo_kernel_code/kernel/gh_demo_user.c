@@ -600,6 +600,8 @@ void Gh3x2x_UserHandleCurrentInfo(void)
 void Gh3x2x_HalSerialSendData(GU8* uchTxDataBuf, GU16 usBufLen)
 {
     GOODIX_PLATFORM_SERIAL_SEND_ENTITY(uchTxDataBuf, usBufLen);
+	extern void gh3x2x_ble_notify(const uint8_t* p_data, uint32_t data_len);
+	gh3x2x_ble_notify(uchTxDataBuf, usBufLen);
 }
 
 /**
@@ -616,7 +618,9 @@ void Gh3x2x_HalSerialSendData(GU8* uchTxDataBuf, GU16 usBufLen)
  */
 void Gh3x2xSerialSendTimerInit(GU8 uchPeriodMs)
 {
-    UNUSED_VAR(uchPeriodMs);
+    //UNUSED_VAR(uchPeriodMs);
+	extern void gh3x2x_timer_init(uint32_t period_ms);
+	gh3x2x_timer_init(uchPeriodMs);
 }
 
 /**
@@ -634,6 +638,8 @@ void Gh3x2xSerialSendTimerInit(GU8 uchPeriodMs)
 void Gh3x2xSerialSendTimerStop(void)
 {
     GOODIX_PLATFORM_SERIAL_TIMER_STOP_ENTITY();
+	extern void gh3x2x_timer_stop(void);
+	gh3x2x_timer_stop();
 }
 
 /**
@@ -651,6 +657,8 @@ void Gh3x2xSerialSendTimerStop(void)
 void Gh3x2xSerialSendTimerStart(void)
 {
     GOODIX_PLATFORM_SERIAL_TIMER_START_ENTITY();
+	extern void gh3x2x_timer_start(void);
+	gh3x2x_timer_start();
 }
 #endif
 
@@ -659,6 +667,7 @@ void* Gh3x2xMallocUser(GU32 unMemSize)
 #if (__USER_DYNAMIC_DRV_BUF_EN__)
     #ifdef GOODIX_DEMO_PLATFORM
     GOODIX_PLATFORM_MALLOC_USER_ENTITY(unMemSize);
+    return malloc(unMemSize);
     #else
     //return malloc(unMemSize);
 	UNUSED_VAR(unMemSize);
@@ -674,7 +683,7 @@ void Gh3x2xFreeUser(void* MemAddr)
 {
 #if (__USER_DYNAMIC_DRV_BUF_EN__)
     GOODIX_PLATFORM_FREE_USER_ENTITY(MemAddr);
-    //free(MemAddr);
+    free(MemAddr);
 #else
 	UNUSED_VAR(MemAddr);
 #endif

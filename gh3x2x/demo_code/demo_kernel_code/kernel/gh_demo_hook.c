@@ -8,7 +8,7 @@
  * @author  Gooidx Iot Team
  * 
  */
-
+#include <stdbool.h>
 #include "gh_demo.h"
 #include "gh_demo_config.h"
 #include "gh_demo_inner.h"
@@ -419,6 +419,9 @@ void gh3x2x_frame_data_hook_func(const STGh3x2xFrameInfo * const pstFrameInfo)
 #if (__DRIVER_LIB_MODE__ == __DRV_LIB_WITH_ALGO__)
     }
 #endif
+    
+    extern void gh3x2x_rawdata_notify(uint32_t *p_rawdata, uint32_t data_count);
+    gh3x2x_rawdata_notify(pstFrameInfo->punFrameRawdata, pstFrameInfo->pstFunctionInfo->uchChnlNum);
 }
 
 void gh3x2x_reset_by_protocol_hook(void)
@@ -578,6 +581,7 @@ void GhMultiSensorWearDetStart(void)
  * @return  None
  */
 extern GU8 g_uchNeedStartMultiSensorWearOn;
+extern void gh3x2x_wear_evt_notify(bool is_wear);
 void Gh3x2x_WearEventHook(GU16 usGotEvent, GU8 uchExentEx)
 {
     if (usGotEvent & GH3X2X_IRQ_MSK_WEAR_OFF_BIT)
@@ -586,6 +590,7 @@ void Gh3x2x_WearEventHook(GU16 usGotEvent, GU8 uchExentEx)
         if(uchExentEx&GH3X2X_EVENT_EX_BIT_WEAR_LIVING_TYPE)
         {
             GOODIX_PLATFORM_NONLIVING_WEAR_OFF_EVENT();
+            gh3x2x_wear_evt_notify(false);
             GH3X2X_INFO_LOG("Wear off, no living-object!!!\r\n");
     #if (__GH_MULTI_SENSOR_WEAR_EXAMPLE_EN__&&__GH_MULTI_SENSOR_EVENT_PRO_CONIG__)
             Gh3x2xDemoStopSampling(GH3X2X_FUNCTION_HR|GH3X2X_FUNCTION_SOFT_ADT_GREEN);
@@ -610,7 +615,7 @@ void Gh3x2x_WearEventHook(GU16 usGotEvent, GU8 uchExentEx)
     else if (usGotEvent & GH3X2X_IRQ_MSK_WEAR_ON_BIT)
     {
         GOODIX_PLATFORM_WEAR_ON_EVENT();
-
+        gh3x2x_wear_evt_notify(true);
         if(uchExentEx&GH3X2X_EVENT_EX_BIT_WEAR_LIVING_TYPE)
         {
             GH3X2X_INFO_LOG("Wear on, living-object!!!\r\n");

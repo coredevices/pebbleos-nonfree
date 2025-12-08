@@ -226,7 +226,7 @@ extern void GH3X2X_PlatformLog(GCHAR *chLogString);
 #define   GH3X2X_ALGORITHM_SPO2_DEFAULT_FS                      (100)
 
 /// ecg algorithm support
-#define   GH3X2X_ALGORITHM_ECG_SUPPORT                          (1)
+#define   GH3X2X_ALGORITHM_ECG_SUPPORT                          (0)
 
 
 /// ecg algorithm default sampling frequency
