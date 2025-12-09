@@ -600,8 +600,10 @@ void Gh3x2x_UserHandleCurrentInfo(void)
 void Gh3x2x_HalSerialSendData(GU8* uchTxDataBuf, GU16 usBufLen)
 {
     GOODIX_PLATFORM_SERIAL_SEND_ENTITY(uchTxDataBuf, usBufLen);
+#ifdef GH3X2X_BLE_NOTIFY_DATA
 	extern void gh3x2x_ble_notify(const uint8_t* p_data, uint32_t data_len);
 	gh3x2x_ble_notify(uchTxDataBuf, usBufLen);
+#endif
 }
 
 /**
