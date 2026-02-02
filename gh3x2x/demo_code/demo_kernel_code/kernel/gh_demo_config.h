@@ -25,7 +25,7 @@
 #endif
 #define __GS_SENSITIVITY_CONFIG__                       (GSENSOR_SENSITIVITY_512_COUNTS_PER_G)  /**< gsensor sensitivity config */
 #define __GS_GYRO_ENABLE__                              (0)        /*Gyro enable*/
-#define __GS_NONSYNC_READ_EN__                          (0)
+#define __GS_NONSYNC_READ_EN__                          (1)
 #if __GS_NONSYNC_READ_EN__
 #define __GS_SAMPLE_RATE_HZ__                           (25)        /*gsenor sample rate(Hz)*/
 #define __GS_READ_POINT_NUM__                           (6)         /* host read gsensor sample num in one time */

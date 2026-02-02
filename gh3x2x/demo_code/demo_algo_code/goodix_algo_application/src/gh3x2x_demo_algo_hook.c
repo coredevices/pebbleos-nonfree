@@ -120,7 +120,7 @@ void GH3X2X_Spo2AlgorithmResultReport(STGh3x2xAlgoResult * pstAlgoResult, GU32 l
 #if (__USE_GOODIX_SPO2_ALGORITHM__)
     /* code implement by user */
     //GOODIX_PLATFORM_SPO2_RESULT_REPORT_ENTITY();
-    gh3x2x_result_report(2, pstAlgoResult->snResult[0], pstAlgoResult->snResult[1]);
+    gh3x2x_result_report(2, pstAlgoResult->snResult[0], pstAlgoResult->snResult[2]);
 #endif
 }
 

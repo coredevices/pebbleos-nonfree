@@ -398,6 +398,8 @@ void hal_gsensor_drv_get_fifo_data(STGsensorRawdata gsensor_buffer[], GU16 *gsen
 /*  (*gsensor_buffer_index) can not be allowed bigger than __GSENSOR_DATA_BUFFER_SIZE__  ****************/
 /* Be care for copying data to gsensor_buffer, length of gsensor_buffer is __GSENSOR_DATA_BUFFER_SIZE__ *****/
 /**************************** WARNNING END*****************************************************/
+    extern void gh3026_gsensor_data_get(STGsensorRawdata gsensor_buffer[], GU16 *gsensor_buffer_index);
+    gh3026_gsensor_data_get(gsensor_buffer, gsensor_buffer_index);
 
 #if (__DRIVER_LIB_MODE__ == __DRV_LIB_WITH_ALGO__)
     for (int i = 0; i < *gsensor_buffer_index; i++)
@@ -409,8 +411,6 @@ void hal_gsensor_drv_get_fifo_data(STGsensorRawdata gsensor_buffer[], GU16 *gsen
 #endif
 
     GOODIX_PLATFORM_INT_GET_GS_DATA_ENTITY(gsensor_buffer, gsensor_buffer_index);
-    extern void gh3026_gsensor_data_get(STGsensorRawdata gsensor_buffer[], GU16 *gsensor_buffer_index);
-    gh3026_gsensor_data_get(gsensor_buffer, gsensor_buffer_index);
 
 /**************************** WARNNING: DO NOT REMOVE OR MODIFY THIS CODE   ---START***************************************************/
     if((*gsensor_buffer_index) > (__GSENSOR_DATA_BUFFER_SIZE__))
@@ -600,7 +600,7 @@ void Gh3x2x_UserHandleCurrentInfo(void)
 void Gh3x2x_HalSerialSendData(GU8* uchTxDataBuf, GU16 usBufLen)
 {
     GOODIX_PLATFORM_SERIAL_SEND_ENTITY(uchTxDataBuf, usBufLen);
-#ifdef GH3X2X_BLE_NOTIFY_DATA
+#if defined(MANUFACTURING_FW)
 	extern void gh3x2x_ble_notify(const uint8_t* p_data, uint32_t data_len);
 	gh3x2x_ble_notify(uchTxDataBuf, usBufLen);
 #endif
