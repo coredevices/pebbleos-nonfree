@@ -195,8 +195,11 @@ struct nrf_fuel_gauge_init_parameters {
 	/** Optional configuration parameters. Set to NULL to use default values. */
 	const struct nrf_fuel_gauge_config_parameters *opt_params;
 	/** Optional state memory, previously retrieved using @ref nrf_fuel_gauge_state_get.
-	 *  When used, the library resumes from this state and all other parameters are ignored.
+	 *  When used, the library resumes from this state and other parameters are ignored.
 	 *  Set to NULL when not used or when initializing the library for the first time.
+	 *
+	 *  @note In case the battery model memory address has changed since the state was stored, the
+	 *  @ref model or @ref model_primary pointer will always take precedence when it is not NULL.
 	 */
 	const void *state;
 };
