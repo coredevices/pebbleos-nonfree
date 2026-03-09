@@ -5,8 +5,15 @@
 #ifdef GOODIX_DEMO_PLATFORM
 #include "gh3x2x_demo_goodix_PLATFORM.h"
 #else
-#define GOODIX_PLATFORM_NADT_RESULT_HANDLE_ENTITY()
+// PebbleOS integration: declare NADT result handler
+extern void gh3x2x_nadt_result_handler(const void* algo_result);
+#ifndef GOODIX_PLATFORM_NADT_RESULT_HANDLE_ENTITY
+#define GOODIX_PLATFORM_NADT_RESULT_HANDLE_ENTITY() \
+  gh3x2x_nadt_result_handler(pstAlgoResult)
+#endif
+#ifndef GOODIX_PLATFORM_LOG_ENTITY
 #define GOODIX_PLATFORM_LOG_ENTITY(log_string)
+#endif
 #endif
 
 #if (__GOODIX_ALGO_CALL_MODE__)
