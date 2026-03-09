@@ -4,8 +4,6 @@
 #include "gh3x2x_demo_algo_config.h"
 #include "gh3x2x_demo_algo_hook.h"
 
-extern void gh3x2x_result_report(uint8_t type, uint32_t val, uint8_t quality);
-
 #if (__GOODIX_ALGO_CALL_MODE__)
 
 /**
@@ -89,12 +87,11 @@ void GH3X2X_AdtAlgorithmResultReport(STGh3x2xAlgoResult * pstAlgoResult, GU32 lu
  */
 void GH3X2X_HrAlgorithmResultReport(STGh3x2xAlgoResult * pstAlgoResult, GU32 lubFrameId)
 {
-    //UNUSED_VAR(pstAlgoResult);
-    //UNUSED_VAR(lubFrameId);
+    UNUSED_VAR(lubFrameId);
 #if (__USE_GOODIX_HR_ALGORITHM__)
     /* code implement by user */
-    //GOODIX_PLATFORM_HR_RESULT_REPORT_ENTITY();
-    gh3x2x_result_report(1, pstAlgoResult->snResult[0], pstAlgoResult->snResult[1]);
+    extern void gh3x2x_hr_result_report(uint8_t bpm, uint8_t quality);
+    gh3x2x_hr_result_report(pstAlgoResult->snResult[0], pstAlgoResult->snResult[1]);
 #endif
 }
 
@@ -115,12 +112,11 @@ void GH3X2X_HrAlgorithmResultReport(STGh3x2xAlgoResult * pstAlgoResult, GU32 lub
  */
 void GH3X2X_Spo2AlgorithmResultReport(STGh3x2xAlgoResult * pstAlgoResult, GU32 lubFrameId)
 {
-    //UNUSED_VAR(pstAlgoResult);
     UNUSED_VAR(lubFrameId);
 #if (__USE_GOODIX_SPO2_ALGORITHM__)
     /* code implement by user */
-    //GOODIX_PLATFORM_SPO2_RESULT_REPORT_ENTITY();
-    gh3x2x_result_report(2, pstAlgoResult->snResult[0], pstAlgoResult->snResult[2]);
+    extern void gh3x2x_spo2_result_report(uint8_t pct, uint8_t quality);
+    gh3x2x_spo2_result_report(pstAlgoResult->snResult[0], pstAlgoResult->snResult[2]);
 #endif
 }
 
