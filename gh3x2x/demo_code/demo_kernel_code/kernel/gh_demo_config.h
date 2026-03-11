@@ -118,7 +118,11 @@
 #define __SLOT_SEQUENCE_DYNAMIC_ADJUST_EN__             (1)
 
 /*debug config*/
+#ifdef GH3X2X_TUNING_SERVICE_ENABLED
 #define __SUPPORT_PROTOCOL_ANALYZE__                    (1)         /**< driver lib support protocol analyze */
+#else
+#define __SUPPORT_PROTOCOL_ANALYZE__                    (0)         /**< driver lib support protocol analyze */
+#endif
 #if (__SUPPORT_PROTOCOL_ANALYZE__)
 #define __UPLOAD_ALGO_RESULT__                          (1)         /**< upload algorithm result or not */
 #define __PROTOCOL_SERIAL_TYPE__                        (__PROTOCOL_SERIAL_USE_BLE__)  /**< protocol communicate serial port type */
