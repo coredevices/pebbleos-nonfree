@@ -142,16 +142,17 @@ void GH3X2X_Spo2AlgorithmResultReport(STGh3x2xAlgoResult * pstAlgoResult, GU32 l
  */
 void GH3X2X_HrvAlgorithmResultReport(STGh3x2xAlgoResult * pstAlgoResult, GU32 lubFrameId)
 {
-    UNUSED_VAR(pstAlgoResult);
     UNUSED_VAR(lubFrameId);
-#if (__USE_GOODIX_HRV_ALGORITHM__)
+#if (__USE_GOODIX_HRV_ALGORITHM__) && defined(CONFIG_HRM_HRV)
     /* code implement by user */
-    //SLAVER_LOG("snHrvOut0=%d,snHrvOut1=%d,snHrvOut2=%d,snHrvOut3=%d,snHrvNum=%d,snHrvConfi=%d\r\n",
-    //          stHrvAlgoRes[0].snHrvOut0,stHrvAlgoRes[0].snHrvOut1,stHrvAlgoRes[0].snHrvOut2,stHrvAlgoRes[0].snHrvOut3,stHrvAlgoRes[0].snHrvNum,stHrvAlgoRes[0].snHrvNum);
-    //GOODIX_PLATFORM_HRV_RESULT_REPORT_ENTITY();
+    extern void gh3x2x_hrv_result_report(const int32_t *rri, int32_t confidence, int32_t valid_num);
+    gh3x2x_hrv_result_report((const int32_t *)&pstAlgoResult->snResult[0],
+                             pstAlgoResult->snResult[4],
+                             pstAlgoResult->snResult[5]);
+#else
+    UNUSED_VAR(pstAlgoResult);
 #endif
 }
-
 /**
  * @fn     void GH3X2X_EcgAlgorithmResultReport(STEcgAlgoResult stEcgAlgoRes[], GU16 pusAlgoResIndexArr[], usAlgoResCnt)
  *
