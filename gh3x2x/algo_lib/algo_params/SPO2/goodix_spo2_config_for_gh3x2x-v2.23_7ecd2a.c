@@ -38,7 +38,9 @@ const goodix_spo2_config external_cfg =
 	.quality_module_key = 253,
 	//出值策略
 	.low_spo2_thr = 95,
-	.fast_out_time = 12,
+	// PebbleOS deviation: shorten the fast-path latency (stock 12s) so the first SpO2 value
+	// lands sooner. slow_out_time (stable value) is unchanged, so steady-state accuracy holds.
+	.fast_out_time = 8,
 	.slow_out_time = 30,
 	.min_stable_time_high = 2,
 	.min_stable_time_low = 4,

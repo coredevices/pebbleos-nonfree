@@ -89,7 +89,10 @@
 #define __GOODIX_ALGO_CFG_LIST_MAX_NUM__       (1)
 
 /*algorithm output value process strategy config*/
-#define __GH3X2X_HR_OUTPUT_VALUE_STRATEGY_EN__ (0)
+// Enabled: smooths out implausible HR jumps (>50 BPM vs the previous value) that arrive with low
+// confidence (<=50) - the signature of a motion artifact - by blending toward the previous reading.
+// Directly improves accuracy during movement, where the raw algorithm otherwise hands through spikes.
+#define __GH3X2X_HR_OUTPUT_VALUE_STRATEGY_EN__ (1)
 
 /* algoritm channel nunber config*/
 #define __HR_ALGORITHM_SUPPORT_CHNL_NUM__      (4)  /* range 1~4 */
