@@ -260,6 +260,23 @@ void Gh3x2xSerialSendTimerHandle(void);
 GS8 Gh3x2xEcgCascadeCommunicationTest(void);
 #endif
 
+
+/**
+ * @fn     void Gh3x2xSpo2AfeTuningSet(GU8 uchSpo2Enable)
+ *
+ * @brief  Select the AFE drive settings for the optical path about to run.
+ *
+ * @attention  PebbleOS addition. Call before Gh3x2xDemoStartSampling(): pass non-zero when the
+ *             red/IR SpO2 path is starting, zero for the green HR path. The stock register list is
+ *             left untouched, so heart rate always runs on Goodix's shipped drive settings.
+ *
+ * @param[in]   uchSpo2Enable    non-zero to apply the SpO2 drive settings, zero to restore stock
+ * @param[out]  None
+ *
+ * @return  None
+ */
+void Gh3x2xSpo2AfeTuningSet(GU8 uchSpo2Enable);
+
 #endif /* _GH_DEMO_H_ */
 
 /********END OF FILE********* Copyright (c) 2003 - 2022, Goodix Co., Ltd. ********/

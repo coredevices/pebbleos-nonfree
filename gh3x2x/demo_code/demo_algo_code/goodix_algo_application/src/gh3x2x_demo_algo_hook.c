@@ -115,8 +115,14 @@ void GH3X2X_Spo2AlgorithmResultReport(STGh3x2xAlgoResult * pstAlgoResult, GU32 l
     UNUSED_VAR(lubFrameId);
 #if (__USE_GOODIX_SPO2_ALGORITHM__)
     /* code implement by user */
-    extern void gh3x2x_spo2_result_report(uint8_t pct, uint8_t quality);
-    gh3x2x_spo2_result_report(pstAlgoResult->snResult[0], pstAlgoResult->snResult[2]);
+    // snResult layout (see GH3x2xSpo2AlgoExe): [0]=SpO2%, [1]=R-value, [2]=confidence,
+    // [3]=valid_level, [4]=Hb mean, [5]=invalid flag. Forward the full result so the firmware can
+    // tell a real reading from a rejected one (matching gh3x2x_spo2_result_report's signature).
+    extern void gh3x2x_spo2_result_report(uint8_t pct, uint8_t confidence, uint8_t valid_level,
+                                          uint8_t invalid_flg, int32_t r_val);
+    gh3x2x_spo2_result_report(pstAlgoResult->snResult[0], pstAlgoResult->snResult[2],
+                              pstAlgoResult->snResult[3], pstAlgoResult->snResult[5],
+                              pstAlgoResult->snResult[1]);
 #endif
 }
 
