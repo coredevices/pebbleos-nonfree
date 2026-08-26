@@ -12,6 +12,45 @@
 #include "gh_demo_config.h"
 #include "gh_demo_inner.h"
 
+// PebbleOS addition: SpO2 needs more optical drive than the stock register set provides, but the
+// AGC slots it touches are shared with the green HR path. Rather than deviate in gh3x2x_reg_list0
+// (which would apply the higher drive to heart rate too), keep that list exactly as Goodix shipped
+// it and apply these overrides only while the red/IR path is running - see
+// Gh3x2xSpo2AfeTuningSet(). Each entry carries both values, so every call writes a definite
+// setting and there is no "did we revert it" state to get wrong.
+//
+//  - SLOTx_CTRL_12 AdjUpLimit (AGC ceiling) raised to the chip default 0xFF; the stock cap limited
+//    how high the AGC could drive.
+//  - SLOTx_CTRL_10/11 LedDrvN (initial LED drive) raised 0x19 -> 0x60 (25 -> 96), so the AGC starts
+//    nearer the level SpO2 needs and converges faster. Still well below the ceiling, so the AGC
+//    keeps headroom and a normal-perfusion wrist does not start saturated.
+//
+// Both stay AGC-controlled either way. Benchmarked against an Ultrahuman Ring Air, within 1%.
+typedef struct {
+    GU16 usRegAddr;
+    GU16 usStockValue;
+    GU16 usSpo2Value;
+} STGh3x2xSpo2AfeReg;
+
+static const STGh3x2xSpo2AfeReg g_stSpo2AfeTuning[] = {
+    {0x011E, 0x0019, 0x0060},  // slot0 LED drive
+    {0x0122, 0x0CBF, 0x0CFF},  // slot0 AGC ceiling
+    {0x013C, 0x0219, 0x0260},  // slot1 LED drive
+    {0x013E, 0x197F, 0x19FF},  // slot1 AGC ceiling
+    {0x0156, 0x0219, 0x0260},  // slot2 LED drive
+    {0x015A, 0x197F, 0x19FF},  // slot2 AGC ceiling
+};
+
+void Gh3x2xSpo2AfeTuningSet(GU8 uchSpo2Enable)
+{
+    for (GU8 uchIndex = 0; uchIndex < sizeof(g_stSpo2AfeTuning) / sizeof(g_stSpo2AfeTuning[0]); uchIndex++)
+    {
+        const STGh3x2xSpo2AfeReg *pstReg = &g_stSpo2AfeTuning[uchIndex];
+        GH3X2X_WriteReg(pstReg->usRegAddr,
+                        uchSpo2Enable ? pstReg->usSpo2Value : pstReg->usStockValue);
+    }
+}
+
 /// HR+SPO2+NADT+ADT
 const STGh3x2xReg gh3x2x_reg_list0[] = {
 #if 0 // 20251119
