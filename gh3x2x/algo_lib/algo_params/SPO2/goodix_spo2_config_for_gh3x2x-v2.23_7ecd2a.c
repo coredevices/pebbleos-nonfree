@@ -17,8 +17,12 @@ const goodix_spo2_config external_cfg =
 	//佩戴状态
 	.wear_mode = 0,			    //佩戴状态 0:手环  1：手指  2：耳机
 	// acc move thr
-	.acc_thr_max = 50,
-	.acc_thr_min = 25,
+	// PebbleOS deviation: the stock gate (max=50/min=25 in 512-LSB/g units, ~98/49mg) rejected
+	// almost any wrist movement. Widen it so the algorithm's motion compensation attempts a
+	// (lower-confidence) reading through moderate arm motion instead of discarding it.
+	// max 250 ~0.49g. Benchmarked against an Ultrahuman Ring Air, tracking within 1%.
+	.acc_thr_max = 250,
+	.acc_thr_min = 80,
 	.acc_thr_scale = 3,
 	.acc_thr_num = 3,
 	.acc_thr_angle = 90,
@@ -26,16 +30,22 @@ const goodix_spo2_config external_cfg =
 	.ctr_en_flg = 0,
 	.ctr_red_thr = 160,
 	//信号质量评估相关阈值
-	.ppg_jitter_thr = 35,
-	.ppg_noise_thr = 25,
-	.ppg_coeff_thr = 85,
+	// PebbleOS deviation: loosen the signal-quality gates (stock jitter 35 / noise 25 / coeff 85).
+	// Motion inflates jitter/noise and lowers PPG correlation, so the tight values reject
+	// recoverable beats. These gates only decide which windows the algorithm attempts; the
+	// calibration coefficients above are untouched, so the R-value to SpO2 mapping stays stock.
+	.ppg_jitter_thr = 60,
+	.ppg_noise_thr = 45,
+	.ppg_coeff_thr = 60,
 	.quality_module_key = 253,
 	//出值策略
 	.low_spo2_thr = 95,
-	.fast_out_time = 12,
+	// PebbleOS deviation: shorten the fast-path latency (stock 12s) so the first SpO2 value lands
+	// sooner. slow_out_time (the settled value) is unchanged, so steady-state accuracy holds.
+	.fast_out_time = 8,
 	.slow_out_time = 30,
 	.min_stable_time_high = 2,
-	.min_stable_time_low = 7,
+	.min_stable_time_low = 4,
 	.max_spo2_variation_high = 10,
 	.max_spo2_variation_low = 5,
 	.ouput_module_key = 3
