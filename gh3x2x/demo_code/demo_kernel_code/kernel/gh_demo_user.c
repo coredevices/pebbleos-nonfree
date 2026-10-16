@@ -12,6 +12,7 @@
 /* includes */
 #include "stdint.h"
 #include "string.h"
+#include <pbl/kernel/delay.h>
 #include "gh_drv.h"
 #include "gh_demo_config.h"
 #include "gh_demo_inner.h"
@@ -480,12 +481,11 @@ void GH3X2X_RegisterPrintf(int (**pPrintfUser)(const char *format, ...))
  *
  * @return  None
  */
-extern void delay_us(uint32_t us);
 void Gh3x2x_BspDelayUs(GU16 usUsec)
 {
     GOODIX_PLATFORM_DELAY_US_ENTITY(usUsec);
     
-    delay_us(usUsec);
+    pbl_busy_wait_us(usUsec);
 }
 
 /**
@@ -503,7 +503,7 @@ void Gh3x2x_BspDelayUs(GU16 usUsec)
 void Gh3x2x_BspDelayMs(GU16 usMsec)
 {
     GOODIX_PLATFORM_DELAY_MS_ENTITY(usMsec);
-    delay_us(usMsec * 1000);
+    pbl_busy_wait_us(usMsec * 1000U);
 }
 
 #if (__GH_MULTI_SENSOR_EVENT_PRO_CONIG__)
