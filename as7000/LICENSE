@@ -1,7 +1,0 @@
-This firmware image is covered under Rebble's authorization to redistribute
-modified Pebble firmware images (this firmware image is derived from a
-Pebble firmware).  However, it is not necessarily the case that downstream
-users have permission to redistribute these images.  If you do wish to build
-a firmware image for hardware that uses this binary, you probably should do
-your own research to determine whether you are authorized to redistribute
-it.
