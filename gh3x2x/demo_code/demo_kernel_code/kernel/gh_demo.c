@@ -938,6 +938,21 @@ extern void Gh3x2xDemoStartSamplingInner(GU32 unFuncMode, GU8 uchSwitchEnable);
 /// driver lib demo init flag
 static GU8 g_uchGh3x2xInitFlag = 0;
 static GU8 g_uchGh3x2xInterruptProNotFinishFlag = 0;
+/* Pass state carried into the next Gh3x2xDemoInterruptProcess() call after a yield. */
+static GU8 g_uchGh3x2xIntRepeatNumResume = 0;
+static GU8 g_uchGh3x2xEventExResume = 0;
+static GU8 g_uchGh3x2xIsForceReadResume = 0;
+/* Implemented by the platform: return non-zero once it has arranged for
+ * Gh3x2xDemoInterruptProcess() to run again, so the remaining passes can
+ * finish there instead of in this call. */
+extern GU8 gh3x2x_int_process_yield(void);
+
+static void Gh3x2xDemoIntResumeReset(void)
+{
+    g_uchGh3x2xIntRepeatNumResume = 0;
+    g_uchGh3x2xEventExResume = 0;
+    g_uchGh3x2xIsForceReadResume = 0;
+}
 
 #if (__NORMAL_INT_PROCESS_MODE__ == __INTERRUPT_PROCESS_MODE__ || __MIX_INT_PROCESS_MODE__ == __INTERRUPT_PROCESS_MODE__)
 //hal_gh3x2x_int_handler_call_back is called, this value is 1
@@ -1482,6 +1497,7 @@ void Gh3x2xDemoMemInit(void)
  */
 int Gh3x2xDemoInit(void)
 {
+    Gh3x2xDemoIntResumeReset();
     /// int mode default check
     if (g_uchGh3x2xIntMode == __MIX_INT_PROCESS_MODE__)
     {
@@ -1697,6 +1713,11 @@ GU8 Gh3x2xGetInterruptMode(void)
  */
 void Gh3x2xDemoInterruptProcess(void)
 {
+    GU8 uchResumeRepeatNum = g_uchGh3x2xIntRepeatNumResume;
+    GU8 uchResumeEventEx = g_uchGh3x2xEventExResume;
+    GU8 uchResumeIsForceRead = g_uchGh3x2xIsForceReadResume;
+    Gh3x2xDemoIntResumeReset();
+
     if(0 == g_uchGh3x2xInitFlag)
     {
         GH3X2X_INFO_LOG("[%s]:gh3x2x is not init!!!\r\n", __FUNCTION__);
@@ -1705,18 +1726,16 @@ void Gh3x2xDemoInterruptProcess(void)
 
     GU8 uchRet = 0;
     GU16 usGotEvent = 0;
-    GU8 uchIntRepeatNum = 0;
-    GU8 uchIsForceRead = 0;
+    GU8 uchIntRepeatNum = uchResumeRepeatNum;
+    GU8 uchIsForceRead = uchResumeIsForceRead;
 #if (__GH3X2X_CASCADE_EN__)
     GU16 usGotSlaverEvent = 0;
 #endif
-    GU8 uchEventEx = 0;     //bit0:  0: object/no objiect   1: living/nonliving object
+    GU8 uchEventEx = uchResumeEventEx;     //bit0:  0: object/no objiect   1: living/nonliving object
                             //bit1:  0: None                1: chip0 lead on
                             //bit2:  0: None                1: chip0 lead off
                             //bit3:  0: None                1: chip1 lead on
                             //bit4:  0: None                1: chip1 lead off
-
-    g_uchGh3x2xInterruptProNotFinishFlag = 1;
 
 #if (__FUNC_TYPE_ECG_ENABLE__)
     STSoftLeadResult stLeadResult = {0, 0};
@@ -1761,6 +1780,9 @@ void Gh3x2xDemoInterruptProcess(void)
         g_uchGh3x2xIntCallBackIsCalled = 0;
     }  
 #endif
+
+    /* Set only once processing really starts, so early returns can't leave it stuck. */
+    g_uchGh3x2xInterruptProNotFinishFlag = 1;
 
     do{
         uchRet = GH3X2X_INT_PROCESS_SUCCESS;
@@ -2240,6 +2262,14 @@ void Gh3x2xDemoInterruptProcess(void)
         else
         {
             uchIntRepeatNum++;
+            /* A backlog can take many passes; give the thread back between them. */
+            if ((GH3X2X_INT_PROCESS_REPEAT == uchRet) && gh3x2x_int_process_yield())
+            {
+                g_uchGh3x2xIntRepeatNumResume = uchIntRepeatNum;
+                g_uchGh3x2xEventExResume = uchEventEx;
+                g_uchGh3x2xIsForceReadResume = uchIsForceRead;
+                break;
+            }
         }
     }while(GH3X2X_INT_PROCESS_REPEAT == uchRet);
     g_uchGh3x2xInterruptProNotFinishFlag = 0;
@@ -2633,6 +2663,8 @@ void GH3x2xMaserControlFunctionLog(GU32 unFuncMode, EMUprotocolParseCmdType emCm
  */
 void Gh3x2xDemoSamplingControl(GU32 unFuncMode, EMUprotocolParseCmdType emSwitch)
 {
+    /* A new sampling session must not inherit pass state from the previous one. */
+    Gh3x2xDemoIntResumeReset();
 
     if ((GH3X2X_GetConfigFuncMode() & unFuncMode) != unFuncMode)
     {
