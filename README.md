@@ -27,8 +27,9 @@ python3 sf32lb52/gen_lcpu_patch.py --series sf32lb57 sf32lb57/lcpu_patch.c sf32l
 
 `nordic/softdevice_controller` and `nordic/mpsl` are the Bluetooth LE
 controller and the multiprotocol service layer it runs on, for the nRF54L,
-from sdk-nrfxlib (tag in each `VERSION` file). Only the nRF54L libraries are
-kept: the peripheral-only and multirole controllers, the MPSL and its common
-front-end module library, for the hard-float and softfp float ABIs. To
-update, copy the `include` directories and those libraries from the new tag,
-and update `VERSION`.
+from sdk-nrfxlib (tag in each `VERSION` file). Only the libraries of the
+nRF54L15 (`nrf54l`) and the nRF54LM20 (`nrf54lm`) are kept: the
+peripheral-only and multirole controllers, the MPSL and its common front-end
+module library, for the hard-float and softfp float ABIs. To update, copy the
+`include` directories and those libraries from the new tag, and update
+`VERSION`.
