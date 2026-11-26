@@ -22,3 +22,13 @@ firmware uses `sf32lb57/lcpu_patch.h`, generated from it the same way:
 ```
 python3 sf32lb52/gen_lcpu_patch.py --series sf32lb57 sf32lb57/lcpu_patch.c sf32lb57/lcpu_patch.h
 ```
+
+## Nordic SoftDevice Controller and MPSL
+
+`nordic/softdevice_controller` and `nordic/mpsl` are the Bluetooth LE
+controller and the multiprotocol service layer it runs on, for the nRF54L,
+from sdk-nrfxlib (tag in each `VERSION` file). Only the nRF54L libraries are
+kept: the peripheral-only and multirole controllers, the MPSL and its common
+front-end module library, for the hard-float and softfp float ABIs. To
+update, copy the `include` directories and those libraries from the new tag,
+and update `VERSION`.
